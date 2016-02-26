@@ -3,6 +3,8 @@ package com.kata;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -37,19 +39,33 @@ public class KataTest {
     public void inputStringContainsThreeNumbersWithSpecifiedDelimeter_addCalled_SumOfNumbersReturned() {
         assertEquals(2, new StringCalculator().add("//;\n1;2"));
     }
-
+    
     public class StringCalculator {
+
+        private static final String OPTIONAL_DELIMITER_PATTERN
+                = "(//(.{1})\n)";
+
         public int add(String numbers) {
             return numbers.isEmpty() ? 0
                     : sumStringOfNumbers(numbers);
         }
-    }
 
-    private int sumStringOfNumbers(String numbers) {
-        return Arrays.asList(numbers.split("[,\n]"))
-                .stream()
-                .mapToInt(String -> Integer.parseInt(String))
-                .sum();
+        private int sumStringOfNumbers(String numbers) {
+
+            Matcher optionalDelimiterMatcher = Pattern
+                        .compile(OPTIONAL_DELIMITER_PATTERN)
+                        .matcher(numbers);
+
+            String optionalDelimiter = "";
+            if (optionalDelimiterMatcher.matches()) {
+                optionalDelimiter = optionalDelimiterMatcher.group();
+            }
+
+            return Arrays.asList(numbers.split("[,\n" + optionalDelimiter + "]"))
+                      .stream()
+                      .mapToInt(String -> Integer.parseInt(String))
+                      .sum();
+        }
     }
 
 

@@ -23,6 +23,11 @@ public class KataTest {
         assertEquals(3, new Kata().add("1,2"));
     }
 
+    @Test
+    public void stringContainsThreeNumbers_addCalled_SumOfThreeNumbersReturned() {
+        assertEquals(6, new Kata().add("1,2,3"));
+    }
+
 
     private class Kata {
         public int add(String s) {

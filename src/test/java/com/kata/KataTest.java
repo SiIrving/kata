@@ -2,6 +2,8 @@ package com.kata;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static junit.framework.TestCase.assertEquals;
 
 public class KataTest {
@@ -11,10 +13,23 @@ public class KataTest {
         assertEquals(0, new Kata().add(""));
     }
 
+    @Test
+    public void stringContainsOneNumber_addCalled_NumberReturned() {
+        assertEquals(1, new Kata().add("1"));
+    }
+
+    @Test
+    public void stringContainsTwoNumbers_addCalled_SumOfTwoNumbersReturned() {
+        assertEquals(3, new Kata().add("1,2"));
+    }
+
 
     private class Kata {
         public int add(String s) {
-            return 0;
+            return s.isEmpty() ? 0 : Arrays.asList(s.split(","))
+                                            .stream()
+                                            .mapToInt(String -> Integer.parseInt(String))
+                                            .sum();
         }
     }
 }

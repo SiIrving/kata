@@ -3,6 +3,8 @@ package com.kata;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -37,6 +39,11 @@ public class KataTest {
     public void stringContainsThreeEntriesWithOneSpecifiedDelimiter_AddCalled_SumOfEntriesReturned() {
         assertEquals(6, new Kata().add("//;\n1;2,3"));
     }
+    
+    @Test
+    public void stringContainsThreeEntriesWithOneSpecifiedDelimiter_GetDelimiterCalled_DelimterReturned() {
+        assertEquals(";", new Kata().getDelimter("//;\n1;2,3"));
+    }
 
 
     private class Kata {
@@ -46,6 +53,13 @@ public class KataTest {
                                         .stream()
                                         .mapToInt(String -> Integer.parseInt(String))
                                         .sum();
+        }
+
+        public String getDelimter(String s) {
+            Matcher delimMatcher =
+                    Pattern.compile("//(.{1})\\n.*").matcher(s);
+
+              return delimMatcher.find() ? delimMatcher.group(1) : "";
         }
     }
 }

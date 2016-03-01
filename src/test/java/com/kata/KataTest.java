@@ -39,14 +39,18 @@ public class KataTest {
     public void stringContainsThreeEntriesWithOneSpecifiedDelimiter_AddCalled_SumOfEntriesReturned() {
         assertEquals(6, new Kata().add("//;\n1;2,3"));
     }
-    
+
     @Test
-    public void stringContainsThreeEntriesWithOneSpecifiedDelimiter_GetDelimiterCalled_DelimterReturned() {
-        assertEquals(";", new Kata().getDelimter("//;\n1;2,3"));
+    public void stringContainsThreeEntriesWithOneSpecifiedDelimiter_ParseInputCalled_ParsedInputReturned() {
+        Kata.ParsedInput parsedInput = new Kata().parseInput("//;\n1;2,3");
+        assertEquals(";", parsedInput.getOptionalDelim());
+        assertEquals("1;2,3", parsedInput.getStringOfNumbers());
     }
 
 
     private class Kata {
+
+        private String OPTIONAL_DELIM_PATTERN = "//(.{1})\\n";
 
         public int add(String s) {
             return s.isEmpty() ? 0 : Arrays.asList(s.split("[\n,]"))
@@ -55,11 +59,33 @@ public class KataTest {
                                         .sum();
         }
 
-        public String getDelimter(String s) {
+        public ParsedInput parseInput(String s) {
             Matcher delimMatcher =
-                    Pattern.compile("//(.{1})\\n.*").matcher(s);
+                    Pattern.compile(OPTIONAL_DELIM_PATTERN + ".*").matcher(s);
 
-              return delimMatcher.find() ? delimMatcher.group(1) : "";
+              String optionalDelim = delimMatcher.find() ? delimMatcher.group(1) : "";
+
+            return new ParsedInput(optionalDelim, s.replaceAll(OPTIONAL_DELIM_PATTERN, ""));
+        }
+
+        public class ParsedInput {
+
+            private String optionalDelim;
+
+            private String stringOfNumbers;
+
+            ParsedInput(String optionalDelim, String stringOfNumbers) {
+                this.optionalDelim = optionalDelim;
+                this.stringOfNumbers = stringOfNumbers;
+            }
+
+            public String getOptionalDelim() {
+                return optionalDelim;
+            }
+
+            public String getStringOfNumbers() {
+                return stringOfNumbers;
+            }
         }
     }
 }

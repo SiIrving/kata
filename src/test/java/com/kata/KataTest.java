@@ -12,10 +12,15 @@ public class KataTest {
         assertEquals(0,kata.add(""));
     }
 
+    @Test
+    public void stringContainsNumber_AddCalled_NumberReturned() {
+        Kata kata = new Kata();
+        assertEquals(1,kata.add("1"));
+    }
 
     private class Kata {
         public int add(String s) {
-            return 0;
+            return s.isEmpty() ? 0 : Integer.parseInt(s);
         }
     }
 }

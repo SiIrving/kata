@@ -1,6 +1,5 @@
 package com.kata;
 
-import io.swagger.models.auth.In;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -43,9 +42,9 @@ public class KataTest {
     }
 
     @Test
-    public void stringContainsFourNumbersWithDifferentDelimitersIncludingSpecified_SplitIntoStringOfNumbersCalled_StringOfNumbersReturned() {
+    public void stringContainsFourNumbersWithDifferentDelimitersIncludingSpecified_SplitIntoListOfNumbersCalled_StringOfNumbersReturned() {
         Kata kata = new Kata();
-        assertEquals(Arrays.asList("1","2","3","4"),kata.splitIntoStringOfNumbers("//;\n1\n2,3;4"));
+        assertEquals(Arrays.asList("1","2","3","4"),kata.splitIntoListOfNumbers("//;\n1\n2,3;4"));
     }
 
     @Test
@@ -59,13 +58,13 @@ public class KataTest {
         private static final String OPTIONAL_DELIM_PATTERN = "//(.{1})\n";
 
         public int add(String s) {
-            return s.isEmpty() ? 0 : splitIntoStringOfNumbers(s)
+            return s.isEmpty() ? 0 : splitIntoListOfNumbers(s)
                                         .stream()
                                         .mapToInt(String -> Integer.parseInt(String))
                                         .sum();
         }
 
-        public List<String> splitIntoStringOfNumbers(String s) {
+        public List<String> splitIntoListOfNumbers(String s) {
             Matcher matcher = Pattern.compile(OPTIONAL_DELIM_PATTERN + ".*")
                                     .matcher(s);
             String optionalDelim = "";

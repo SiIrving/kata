@@ -48,12 +48,18 @@ public class KataTest {
         assertEquals(Arrays.asList("1","2","3","4"),kata.splitIntoStringOfNumbers("//;\n1\n2,3;4"));
     }
 
+    @Test
+    public void stringContainsFourNumbersWithDifferentDelimitersIncludingSpecified_AddCalled_SumReturned() {
+        Kata kata = new Kata();
+        assertEquals(10,kata.add("//;\n1\n2,3;4"));
+    }
+
     private class Kata {
 
         private static final String OPTIONAL_DELIM_PATTERN = "//(.{1})\n";
 
         public int add(String s) {
-            return s.isEmpty() ? 0 : Arrays.asList(s.split("[,\n]"))
+            return s.isEmpty() ? 0 : splitIntoStringOfNumbers(s)
                                         .stream()
                                         .mapToInt(String -> Integer.parseInt(String))
                                         .sum();

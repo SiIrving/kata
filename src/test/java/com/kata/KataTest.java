@@ -1,6 +1,9 @@
 package com.kata;
 
+import io.swagger.models.auth.In;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -18,9 +21,18 @@ public class KataTest {
         assertEquals(1,kata.add("1"));
     }
 
+    @Test
+    public void stringContainsTwoNumbers_AddCalled_SumReturned() {
+        Kata kata = new Kata();
+        assertEquals(3,kata.add("1,2"));
+    }
+
     private class Kata {
         public int add(String s) {
-            return s.isEmpty() ? 0 : Integer.parseInt(s);
+            return s.isEmpty() ? 0 : Arrays.asList(s.split(","))
+                                        .stream()
+                                        .mapToInt(String -> Integer.parseInt(String))
+                                        .sum();
         }
     }
 }
